@@ -23,7 +23,7 @@ class ViewController: UIViewController,
     
     
 
-    @IBAction func moreButton(sender: AnyObject) {
+    @IBAction func moreButton(_ sender: AnyObject) {
     }
     
     var weather: WeatherGetter!
@@ -57,13 +57,13 @@ class ViewController: UIViewController,
         // Dispose of any resources that can be recreated.
     }
     
-    func didGetWeather(weather: Weather) {
+    func didGetWeather(_ weather: Weather) {
         // This method is called asynchronously, which means it won't execute in the main queue.
         // ALl UI code needs to execute in the main queue, which is why we're wrapping the code
         // that updates all the labels in a dispatch_async() call.
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             
-            self.weatherLbl.text = weather.weatherDescription.capitalizedString
+            self.weatherLbl.text = weather.weatherDescription.capitalized
             self.tempLbl.text = "\(Int(round(weather.tempCelsius)))°"
             
             
@@ -76,11 +76,11 @@ class ViewController: UIViewController,
         }
     }
     
-    func didNotGetWeather(error: NSError) {
+    func didNotGetWeather(_ error: Error) {
         // This method is called asynchronously, which means it won't execute in the main queue.
         // ALl UI code needs to execute in the main queue, which is why we're wrapping the call
         // to showSimpleAlert(title:message:) in a dispatch_async() call.
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.showSimpleAlert(title: "Can't get the weather",
                                  message: "The weather service isn't responding.")
         }
@@ -94,13 +94,13 @@ class ViewController: UIViewController,
     // Enable the "Get weather for the city above" button
     // if the city text field contains any text,
     // disable it otherwise.
-    func textField(textField: UITextField,
-                   shouldChangeCharactersInRange range: NSRange,
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
                                                  replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
-        let prospectiveText = (currentText as NSString).stringByReplacingCharactersInRange(
-            range,
-            withString: string)
+        let prospectiveText = (currentText as NSString).replacingCharacters(
+            in: range,
+            with: string)
         
         print("Count: \(prospectiveText.characters.count)")
         return true
@@ -108,7 +108,7 @@ class ViewController: UIViewController,
     
     // Pressing the clear button on the text field (the x-in-a-circle button
     // on the right side of the field)
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         // Even though pressing the clear button clears the text field,
         // this line is necessary. I'll explain in a later blog post.
         textField.text = ""
@@ -119,13 +119,13 @@ class ViewController: UIViewController,
     
     // Pressing the return button on the keyboard should be like
     // pressing the "Get weather for the city above" button.
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
     // Tapping on the view should dismiss the keyboard.
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
     
@@ -133,19 +133,19 @@ class ViewController: UIViewController,
     // MARK: - Utility methods
     // -----------------------
     
-    func showSimpleAlert(title title: String, message: String) {
+    func showSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(
             title: title,
             message: message,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         let okAction = UIAlertAction(
             title: "OK",
-            style:  .Default,
+            style:  .default,
             handler: nil
         )
         alert.addAction(okAction)
-        presentViewController(
+        present(
             alert,
             animated: true,
             completion: nil
@@ -165,7 +165,7 @@ extension String {
     // A handy method for %-encoding strings containing spaces and other
     // characters that need to be converted for use in URLs.
     var urlEncoded: String {
-        return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet())!
+        return self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlUserAllowed)!
     }
     
 }

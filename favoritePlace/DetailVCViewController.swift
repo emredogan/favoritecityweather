@@ -22,8 +22,8 @@ class DetailVCViewController: UIViewController {
     }
     
     
-    @IBAction func backPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backPressed(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
         
     }
     

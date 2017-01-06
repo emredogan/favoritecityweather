@@ -26,8 +26,8 @@ import Foundation
 // - The weather was not acquired from OpenWeatherMap.org, or
 // - The received weather data could not be converted from JSON into a dictionary.
 protocol WeatherGetterDelegate {
-    func didGetWeather(weather: Weather)
-    func didNotGetWeather(error: NSError)
+    func didGetWeather(_ weather: Weather)
+    func didNotGetWeather(_ error: Error)
 }
 
 
@@ -36,10 +36,10 @@ protocol WeatherGetterDelegate {
 
 class WeatherGetter {
     
-    private let openWeatherMapBaseURL = "http://api.openweathermap.org/data/2.5/weather"
-    private let openWeatherMapAPIKey = "ce6a7d2f658ebdbd775c6e15cbb16552"
+    fileprivate let openWeatherMapBaseURL = "http://api.openweathermap.org/data/2.5/weather"
+    fileprivate let openWeatherMapAPIKey = "ce6a7d2f658ebdbd775c6e15cbb16552"
     
-    private var delegate: WeatherGetterDelegate
+    fileprivate var delegate: WeatherGetterDelegate
     
     
     // MARK: -
@@ -48,18 +48,23 @@ class WeatherGetter {
         self.delegate = delegate
     }
     
-    func getWeather(city: String) {
+    func getWeather(_ city: String) {
         
         
         
         // This is a pretty simple networking task, so the shared session will do.
-        let session = NSURLSession.sharedSession()
+        let session = URLSession.shared
         
-        let weatherRequestURL = NSURL(string: "\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&q=\(city)")!
+        let weatherURL = URL(string: "\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&q=\(city)")!
+        
+        var weatherRequestURL = URLRequest(url: weatherURL)
+        
+        weatherRequestURL.httpMethod = "Post"
         
         // The data task retrieves the data.
-        let dataTask = session.dataTaskWithURL(weatherRequestURL) {
-            (data: NSData?, response: NSURLResponse?, error: NSError?) in
+        let dataTask = URLSession.shared.dataTask(with: weatherRequestURL, completionHandler: { (responseData:Data?,
+            response:URLResponse?,
+            error:Error?) -> Void in
             if let networkError = error {
                 // Case 1: Error
                 // An error occurred while trying to get data from the server.
@@ -71,9 +76,9 @@ class WeatherGetter {
                 // We got data from the server!
                 do {
                     // Try to convert that data into a Swift dictionary
-                    let weatherData = try NSJSONSerialization.JSONObjectWithData(
-                        data!,
-                        options: .MutableContainers) as! [String: AnyObject]
+                    let weatherData = try JSONSerialization.jsonObject(
+                        with: responseData!  ,
+                        options: .mutableContainers) as! [String: AnyObject]
                     
                     // If we made it to this point, we've successfully converted the
                     // JSON-formatted weather data into a Swift dictionary.
@@ -89,7 +94,7 @@ class WeatherGetter {
                     self.delegate.didNotGetWeather(jsonError)
                 }
             }
-        }
+        } as! (Data?, URLResponse?, Error?) -> Void)
         
         // The data task is set up...launch it!
         dataTask.resume()
