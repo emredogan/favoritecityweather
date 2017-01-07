@@ -13,7 +13,7 @@ class ViewController: UIViewController,
     UITextFieldDelegate
 {
     
-    @IBOutlet weak var moreBtn: UIButton!
+    
     
     
     @IBOutlet weak var weatherLbl: UILabel!
@@ -22,9 +22,12 @@ class ViewController: UIViewController,
     @IBOutlet weak var cityTextField: UILabel!
     
     
+    @IBOutlet weak var weatherIcon: UIImageView!
+    
 
-    @IBAction func moreButton(_ sender: AnyObject) {
-    }
+    @IBOutlet weak var background: UIImageView!
+    
+    @IBOutlet weak var weatherBackground: UIView!
     
     var weather: WeatherGetter!
     
@@ -34,18 +37,45 @@ class ViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        weatherBackground?.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        
+        
+        var diceRoll = Int(arc4random_uniform(3) + 1)
+        
+        let date = NSDate()
+        let calendar = NSCalendar.current
+        let hour = calendar.component(.hour, from: date as Date)
+        
+        print("date: \(date)")
+        print("hour: \(hour)")
+        
+        if hour > 19 {
+            background.image = UIImage(named: "gece")
+        } else if diceRoll == 0 {
+            background.image = UIImage(named: "antalyagenel2")
+        } else if diceRoll == 1 {
+            background.image = UIImage(named: "antalyagenel")
+        } else if diceRoll == 2 {
+            background.image = UIImage(named: "antalyagenel3")
+        } else if diceRoll == 3 {
+            background.image = UIImage(named: "Antalya")
+        } else {
+            background.image = UIImage(named: "antalyagenel2")
+        }
+        
         
         
         
         
         
         weather = WeatherGetter(delegate: self)
-        moreBtn.layer.cornerRadius == 2.0
+        
         
         weatherLbl.text = ""
         tempLbl.text = ""
         
         weather.getWeather(cityTextField.text!.urlEncoded)
+        
         
         
         
@@ -57,6 +87,8 @@ class ViewController: UIViewController,
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     func didGetWeather(_ weather: Weather) {
         // This method is called asynchronously, which means it won't execute in the main queue.
         // ALl UI code needs to execute in the main queue, which is why we're wrapping the code
@@ -66,12 +98,38 @@ class ViewController: UIViewController,
             self.weatherLbl.text = weather.weatherDescription.capitalized
             self.tempLbl.text = "\(Int(round(weather.tempCelsius)))°"
             
-            
-            if let rain = weather.rainfallInLast3Hours {
-            }
-            else {
+            if self.weatherLbl.text == "Clear Sky" {
+                self.weatherIcon.image = UIImage(named: "sun")
+            } else if self.weatherLbl.text == "Few Clouds" {
+                self.weatherIcon.image = UIImage(named: "cloud")
+               // self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.weatherLbl.text == "Scattered Clouds" {
+                self.weatherIcon.image = UIImage(named: "cloud")
+              //  self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.weatherLbl.text == "Broken Clouds" {
+                self.weatherIcon.image = UIImage(named: "cloud")
+              //  self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.weatherLbl.text == "Shower Rain" {
+                self.weatherIcon.image = UIImage(named: "rain")
+            } else if self.weatherLbl.text == "Rain" {
+                self.weatherIcon.image = UIImage(named: "rain")
+            } else if self.weatherLbl.text == "Thunderstorm" {
+                self.weatherIcon.image = UIImage(named: "rain")
+            } else if self.weatherLbl.text == "Snow" {
+                self.weatherIcon.image = UIImage(named: "snow")
+            } else if self.weatherLbl.text == "Mist" {
+                self.weatherIcon.image = UIImage(named: "cloud")
+            } else {
+                
+                self.weatherIcon.image = UIImage(named: "sun")
                 
             }
+            
+            
+            
+            
+            
+            
             
         }
     }
