@@ -25,32 +25,32 @@ import Foundation
 // The delegate's didNotGetWeather method is called if either:
 // - The weather was not acquired from OpenWeatherMap.org, or
 // - The received weather data could not be converted from JSON into a dictionary.
-protocol WeatherGetterDelegate {
-    func didGetWeather(_ weather: Weather)
-    func didNotGetWeather(_ error: Error)
+protocol ForecastGetterDelegate {
+    func didGetForecast(_ forecast: Forecast)
+    func didNotGetForecast(_ error: Error)
 }
 
 
 // MARK: WeatherGetter
 // ===================
 
-class WeatherGetter {
+class ForecastGetter {
     
-   // api.openweathermap.org/data/2.5/forecast?q=
+    // api.openweathermap.org/data/2.5/forecast?q=
     
-    fileprivate let openWeatherMapBaseURL = "http://api.openweathermap.org/data/2.5/weather"
+    fileprivate let openWeatherMapBaseURL = "http://api.openweathermap.org/data/2.5/forecast"
     fileprivate let openWeatherMapAPIKey = "ce6a7d2f658ebdbd775c6e15cbb16552"
     
-    fileprivate var delegate: WeatherGetterDelegate
+    fileprivate var delegate: ForecastGetterDelegate
     
     
     // MARK: -
     
-    init(delegate: WeatherGetterDelegate) {
+    init(delegate: ForecastGetterDelegate) {
         self.delegate = delegate
     }
     
-    func getWeather(_ city: String) {
+    func getForecast(_ city: String) {
         
         
         
@@ -72,7 +72,7 @@ class WeatherGetter {
             if let networkError = error {
                 // Case 1: Error
                 // An error occurred while trying to get data from the server.
-                self.delegate.didNotGetWeather(networkError)
+                self.delegate.didNotGetForecast(networkError)
             }
             else {
                 print("Success")
@@ -80,27 +80,29 @@ class WeatherGetter {
                 // We got data from the server!
                 do {
                     // Try to convert that data into a Swift dictionary
-                    let weatherData = try JSONSerialization.jsonObject(
+                    let forecastData = try JSONSerialization.jsonObject(
                         with: responseData!  ,
                         options: .mutableContainers) as! [String: AnyObject]
                     
                     // If we made it to this point, we've successfully converted the
                     // JSON-formatted weather data into a Swift dictionary.
                     // Let's now used that dictionary to initialize a Weather struct.
-                    let weather = Weather(weatherData: weatherData)
+                    let forecast = Forecast(forecastData: forecastData)
+                    
+                    print("forecast: \(forecast)")
                     
                     
                     
                     // Now that we have the Weather struct, let's notify the view controller,
                     // which will use it to display the weather to the user.
-                    self.delegate.didGetWeather(weather)
+                    self.delegate.didGetForecast(forecast)
                 }
                 catch let jsonError as NSError {
                     // An error occurred while trying to convert the data into a Swift dictionary.
-                    self.delegate.didNotGetWeather(jsonError)
+                    self.delegate.didNotGetForecast(jsonError)
                 }
             }
-        } as! (Data?, URLResponse?, Error?) -> Void)
+            } as! (Data?, URLResponse?, Error?) -> Void)
         
         // The data task is set up...launch it!
         dataTask.resume()

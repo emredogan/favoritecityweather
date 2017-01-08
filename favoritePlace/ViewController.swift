@@ -10,9 +10,11 @@ import UIKit
 
 class ViewController: UIViewController,
     WeatherGetterDelegate,
-    UITextFieldDelegate
+    UITextFieldDelegate, ForecastGetterDelegate
 {
     
+    @IBOutlet weak var forecastLbl: UILabel!
+    @IBOutlet weak var forecastTempLbl: UILabel!
     
     
     
@@ -29,7 +31,14 @@ class ViewController: UIViewController,
     
     @IBOutlet weak var weatherBackground: UIView!
     
+    @IBOutlet weak var forecastBackground: UIView!
+    
+    
+    
+    @IBOutlet weak var forecastIcon: UIImageView!
     var weather: WeatherGetter!
+    
+    var forecast: ForecastGetter!
     
     
     
@@ -37,10 +46,14 @@ class ViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        weatherBackground?.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        weatherBackground?.backgroundColor = UIColor(white: 1, alpha: 0.6)
+        
+        forecastBackground?.backgroundColor = UIColor(white: 1, alpha: 0.4)
         
         
-        var diceRoll = Int(arc4random_uniform(3) + 1)
+        let diceRoll = Int(arc4random_uniform(4) + 1)
+        
+        print("diceRoll:\(diceRoll)")
         
         let date = NSDate()
         let calendar = NSCalendar.current
@@ -49,18 +62,30 @@ class ViewController: UIViewController,
         print("date: \(date)")
         print("hour: \(hour)")
         
-        if hour > 19 {
+        if hour > 20 {
             background.image = UIImage(named: "gece")
-        } else if diceRoll == 0 {
-            background.image = UIImage(named: "antalyagenel2")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
         } else if diceRoll == 1 {
-            background.image = UIImage(named: "antalyagenel")
+            background.image = UIImage(named: "antalyagenel2")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
         } else if diceRoll == 2 {
-            background.image = UIImage(named: "antalyagenel3")
+            background.image = UIImage(named: "antalyagenel")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
         } else if diceRoll == 3 {
+            background.image = UIImage(named: "antalyagenel3")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        } else if diceRoll == 4 {
             background.image = UIImage(named: "Antalya")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
         } else {
             background.image = UIImage(named: "antalyagenel2")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
         }
         
         
@@ -69,12 +94,15 @@ class ViewController: UIViewController,
         
         
         weather = WeatherGetter(delegate: self)
+        forecast = ForecastGetter(delegate: self)
         
         
         weatherLbl.text = ""
         tempLbl.text = ""
         
+        forecast.getForecast(cityTextField.text!.urlEncoded)
         weather.getWeather(cityTextField.text!.urlEncoded)
+        
         
         
         
@@ -85,6 +113,57 @@ class ViewController: UIViewController,
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func didNotGetForecast(_ error: Error) {
+        DispatchQueue.main.async {
+            self.showSimpleAlert(title: "Can't get the weather",
+                                 message: "The weather service isn't responding.")
+        }
+        print("didNotGetWeather error: \(error)")
+    }
+    
+    func didGetForecast(_ forecast: Forecast) {
+        
+        DispatchQueue.main.async {
+            
+            self.forecastLbl.text = forecast.tomorrowWeather.capitalized
+            self.forecastTempLbl.text = "\(Int(round(forecast.tempCelsius)))°"
+            
+            if self.forecastLbl.text == "Clear Sky" {
+                self.forecastIcon.image = UIImage(named: "sun")
+            } else if self.forecastLbl.text == "Few Clouds" {
+                self.forecastIcon.image = UIImage(named: "cloud")
+                // self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.forecastLbl.text == "Scattered Clouds" {
+                self.forecastIcon.image = UIImage(named: "cloud")
+                //  self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.forecastLbl.text == "Broken Clouds" {
+                self.forecastIcon.image = UIImage(named: "cloud")
+                //  self.background.image = UIImage(named: "antalyabulutlu")
+            } else if self.forecastLbl.text == "Shower Rain" {
+                self.forecastIcon.image = UIImage(named: "rain")
+            } else if self.forecastLbl.text == "Moderate Rain" {
+                self.forecastIcon.image = UIImage(named: "rain")
+            } else if self.forecastLbl.text == "Rain" {
+                self.forecastIcon.image = UIImage(named: "rain")
+            } else if self.forecastLbl.text == "Thunderstorm" {
+                self.forecastIcon.image = UIImage(named: "rain")
+            } else if self.forecastLbl.text == "Snow" {
+                self.forecastIcon.image = UIImage(named: "snow")
+            } else if self.forecastLbl.text == "Mist" {
+                self.forecastIcon.image = UIImage(named: "cloud")
+            } else {
+                
+                self.forecastIcon.image = UIImage(named: "sun")
+                
+            }
+
+            
+        }
+        
+        
     }
     
     
@@ -111,6 +190,8 @@ class ViewController: UIViewController,
               //  self.background.image = UIImage(named: "antalyabulutlu")
             } else if self.weatherLbl.text == "Shower Rain" {
                 self.weatherIcon.image = UIImage(named: "rain")
+            } else if self.forecastLbl.text == "Moderate Rain" {
+                self.weatherIcon.image = UIImage(named: "rain")
             } else if self.weatherLbl.text == "Rain" {
                 self.weatherIcon.image = UIImage(named: "rain")
             } else if self.weatherLbl.text == "Thunderstorm" {
@@ -121,7 +202,7 @@ class ViewController: UIViewController,
                 self.weatherIcon.image = UIImage(named: "cloud")
             } else {
                 
-                self.weatherIcon.image = UIImage(named: "sun")
+                self.weatherIcon.image = UIImage(named: "cloud")
                 
             }
             
@@ -209,6 +290,8 @@ class ViewController: UIViewController,
             completion: nil
         )
     }
+    
+    
 
     
     
