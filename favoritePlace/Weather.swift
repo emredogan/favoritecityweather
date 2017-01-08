@@ -22,6 +22,7 @@ struct Weather {
     
     let mainWeather: String
     let weatherDescription: String
+    let weatherStatus: String
     
     
     
@@ -57,7 +58,7 @@ struct Weather {
         let weatherDict = weatherData["weather"]![0] as! [String: AnyObject]
         mainWeather = weatherDict["main"] as! String
         weatherDescription = weatherDict["description"] as! String
-        let weatherStatus = weatherDict["main"] as! String
+        weatherStatus = weatherDict["main"] as! String
         print("weatherStatus: \(weatherStatus)")
         
 

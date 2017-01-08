@@ -62,7 +62,7 @@ class ViewController: UIViewController,
         print("date: \(date)")
         print("hour: \(hour)")
         
-        if hour > 20 {
+        if hour < 20 {
             background.image = UIImage(named: "gece")
             weatherLbl.textColor = UIColor.black
             tempLbl.textColor = UIColor.black
@@ -131,33 +131,14 @@ class ViewController: UIViewController,
             self.forecastLbl.text = forecast.tomorrowWeather.capitalized
             self.forecastTempLbl.text = "\(Int(round(forecast.tempCelsius)))°"
             
-            if self.forecastLbl.text == "Clear Sky" {
+            if forecast.tomorrowWeatherMain == "Clear" {
                 self.forecastIcon.image = UIImage(named: "sun")
-            } else if self.forecastLbl.text == "Few Clouds" {
+            } else if forecast.tomorrowWeatherMain == "Clouds" {
                 self.forecastIcon.image = UIImage(named: "cloud")
-                // self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.forecastLbl.text == "Scattered Clouds" {
-                self.forecastIcon.image = UIImage(named: "cloud")
-                //  self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.forecastLbl.text == "Broken Clouds" {
-                self.forecastIcon.image = UIImage(named: "cloud")
-                //  self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.forecastLbl.text == "Shower Rain" {
+            } else if forecast.tomorrowWeatherMain == "Rain" {
                 self.forecastIcon.image = UIImage(named: "rain")
-            } else if self.forecastLbl.text == "Moderate Rain" {
-                self.forecastIcon.image = UIImage(named: "rain")
-            } else if self.forecastLbl.text == "Rain" {
-                self.forecastIcon.image = UIImage(named: "rain")
-            } else if self.forecastLbl.text == "Thunderstorm" {
-                self.forecastIcon.image = UIImage(named: "rain")
-            } else if self.forecastLbl.text == "Snow" {
+            } else if forecast.tomorrowWeatherMain == "Snow" {
                 self.forecastIcon.image = UIImage(named: "snow")
-            } else if self.forecastLbl.text == "Mist" {
-                self.forecastIcon.image = UIImage(named: "cloud")
-            } else {
-                
-                self.forecastIcon.image = UIImage(named: "sun")
-                
             }
 
             
@@ -174,36 +155,21 @@ class ViewController: UIViewController,
         // that updates all the labels in a dispatch_async() call.
         DispatchQueue.main.async {
             
+            
+            
             self.weatherLbl.text = weather.weatherDescription.capitalized
             self.tempLbl.text = "\(Int(round(weather.tempCelsius)))°"
             
-            if self.weatherLbl.text == "Clear Sky" {
+            print("bakk: \(weather.weatherStatus)")
+            
+            if weather.weatherStatus == "Clear" {
                 self.weatherIcon.image = UIImage(named: "sun")
-            } else if self.weatherLbl.text == "Few Clouds" {
+            } else if weather.weatherStatus == "Clouds" {
                 self.weatherIcon.image = UIImage(named: "cloud")
-               // self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.weatherLbl.text == "Scattered Clouds" {
-                self.weatherIcon.image = UIImage(named: "cloud")
-              //  self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.weatherLbl.text == "Broken Clouds" {
-                self.weatherIcon.image = UIImage(named: "cloud")
-              //  self.background.image = UIImage(named: "antalyabulutlu")
-            } else if self.weatherLbl.text == "Shower Rain" {
+            } else if weather.weatherStatus == "Rain" {
                 self.weatherIcon.image = UIImage(named: "rain")
-            } else if self.forecastLbl.text == "Moderate Rain" {
-                self.weatherIcon.image = UIImage(named: "rain")
-            } else if self.weatherLbl.text == "Rain" {
-                self.weatherIcon.image = UIImage(named: "rain")
-            } else if self.weatherLbl.text == "Thunderstorm" {
-                self.weatherIcon.image = UIImage(named: "rain")
-            } else if self.weatherLbl.text == "Snow" {
+            } else if weather.weatherStatus == "Snow" {
                 self.weatherIcon.image = UIImage(named: "snow")
-            } else if self.weatherLbl.text == "Mist" {
-                self.weatherIcon.image = UIImage(named: "cloud")
-            } else {
-                
-                self.weatherIcon.image = UIImage(named: "cloud")
-                
             }
             
             

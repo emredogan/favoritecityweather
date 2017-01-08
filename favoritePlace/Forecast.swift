@@ -14,6 +14,8 @@ struct Forecast {
     
     let tomorrowWeather: String
     
+    let tomorrowWeatherMain: String
+    
     fileprivate let temp: Double
     var tempCelsius: Double {
         get {
@@ -51,6 +53,14 @@ struct Forecast {
         print("tomorrowWeatherDict: \(tomorrowWeatherDict)")
         
         tomorrowWeather = tomorrowWeatherDict["description"] as! String
+        
+        print("tomorrowWeather: \(tomorrowWeather)")
+        
+        tomorrowWeatherMain = tomorrowWeatherDict["main"] as! String
+        
+        print("tomorrowWeatherMain: \(tomorrowWeatherMain)")
+        
+        
         
         
         
