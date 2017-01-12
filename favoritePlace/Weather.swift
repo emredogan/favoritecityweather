@@ -48,32 +48,66 @@ struct Weather {
     
     
     init(weatherData: [String: AnyObject]) {
-        dateAndTime = Date(timeIntervalSince1970: weatherData["dt"] as! TimeInterval)
-        city = weatherData["name"] as! String
         
+        if weatherData.isEmpty {
+            
+            temp = 273
+            dateAndTime = NSDate() as Date
+            city = ""
+            country = ""
+            mainWeather = ""
+            weatherDescription = ""
+            weatherStatus = ""
+            
+            
+        } else if weatherData.count == 2 {
+            
+            temp = 273
+            dateAndTime = NSDate() as Date
+            city = ""
+            country = ""
+            mainWeather = ""
+            weatherDescription = ""
+            weatherStatus = ""
+            
+        }else {
+            print("weatherData: \(weatherData)")
+            print("weatherDataCount: \(weatherData.count)")
+            dateAndTime = Date(timeIntervalSince1970: weatherData["dt"] as! TimeInterval)
+            city = weatherData["name"] as! String
+            
+            
+            
+            
+            
+            let weatherDict = weatherData["weather"]![0] as! [String: AnyObject]
+            mainWeather = weatherDict["main"] as! String
+            weatherDescription = weatherDict["description"] as! String
+            weatherStatus = weatherDict["main"] as! String
+            print("weatherStatus: \(weatherStatus)")
+            
+            
+            let mainDict = weatherData["main"] as! [String: AnyObject]
+            temp = mainDict["temp"] as! Double
+            
+            
+            
+            
+            
+            
+            
+            
+            let sysDict = weatherData["sys"] as! [String: AnyObject]
+            country = sysDict["country"] as! String
+        }
+            
+            
+        }
 
         
-        
-        
-        let weatherDict = weatherData["weather"]![0] as! [String: AnyObject]
-        mainWeather = weatherDict["main"] as! String
-        weatherDescription = weatherDict["description"] as! String
-        weatherStatus = weatherDict["main"] as! String
-        print("weatherStatus: \(weatherStatus)")
-        
-
-        let mainDict = weatherData["main"] as! [String: AnyObject]
-        temp = mainDict["temp"] as! Double
-       
-        
-     
-        
        
         
         
         
-        let sysDict = weatherData["sys"] as! [String: AnyObject]
-        country = sysDict["country"] as! String
-            }
     
 }

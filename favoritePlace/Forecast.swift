@@ -31,34 +31,63 @@ struct Forecast {
     
     init(forecastData: [String: AnyObject]) {
         
-        print("forecastData: \(forecastData)")
+        if forecastData.isEmpty {
+            
+            temp = 273
+            tomorrowWeatherMain = ""
+            tomorrowWeather = ""
+            
+            
+        } else if forecastData.count == 2 {
+            
+            temp = 273
+            tomorrowWeatherMain = ""
+            tomorrowWeather = ""
+            
+        }
+            
+            
+        else {
+            
+            
+            print("forecastData: \(forecastData)")
+            print("count: \(forecastData.count)")
+            
+            
+            
+           
+            
+            let forecastDict = forecastData["list"]![1] as! [String:AnyObject]
+            
+            print("forecastDict: \(forecastDict)")
+            
+            let forecastDictMain = forecastDict["main"] as! [String:AnyObject]
+            
+            temp = forecastDictMain["temp"] as! Double
+            
+            
+            
+            
+            let tomorrow = forecastDict["weather"]
+            print("tomorrow: \((tomorrow)!)")
+            
+            let tomorrowWeatherDict = tomorrow![0] as! [String:AnyObject]
+            
+            print("tomorrowWeatherDict: \(tomorrowWeatherDict)")
+            
+            tomorrowWeather = tomorrowWeatherDict["description"] as! String
+            
+            print("tomorrowWeather: \(tomorrowWeather)")
+            
+            tomorrowWeatherMain = tomorrowWeatherDict["main"] as! String
+            
+            print("tomorrowWeatherMain: \(tomorrowWeatherMain)")
+            
+        }
         
         
-        let forecastDict = forecastData["list"]![2] as! [String:AnyObject]
-        
-        print("forecastDict: \(forecastDict)")
-        
-        let forecastDictMain = forecastDict["main"] as! [String:AnyObject]
-        
-        temp = forecastDictMain["temp"] as! Double
         
         
-        
-        
-        let tomorrow = forecastDict["weather"]
-        print("tomorrow: \((tomorrow)!)")
-        
-        let tomorrowWeatherDict = tomorrow![0] as! [String:AnyObject]
-        
-        print("tomorrowWeatherDict: \(tomorrowWeatherDict)")
-        
-        tomorrowWeather = tomorrowWeatherDict["description"] as! String
-        
-        print("tomorrowWeather: \(tomorrowWeather)")
-        
-        tomorrowWeatherMain = tomorrowWeatherDict["main"] as! String
-        
-        print("tomorrowWeatherMain: \(tomorrowWeatherMain)")
         
         
         

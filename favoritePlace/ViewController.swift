@@ -33,6 +33,27 @@ class ViewController: UIViewController,
     
     @IBOutlet weak var forecastBackground: UIView!
     
+    @IBOutlet weak var refreshBtn: UIButton!
+    
+    @IBAction func refreshAction(_ sender: Any) {
+      //  UIApplication.shared.keyWindow?.rootViewController = storyboard!.instantiateViewController(withIdentifier: "Root_View")
+        
+        if weatherLbl.text == "" {
+            
+            weather.getWeather(cityTextField.text!.urlEncoded)
+            
+        }
+        
+        if forecastLbl.text == "" {
+            
+            forecast.getForecast(cityTextField.text!.urlEncoded)
+
+            
+        }
+
+        
+    }
+    
     
     
     @IBOutlet weak var forecastIcon: UIImageView!
@@ -41,7 +62,16 @@ class ViewController: UIViewController,
     var forecast: ForecastGetter!
     
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        if weatherLbl.text == "" {
+            weatherLbl.text = "Check internet and click refresh"
+        }
+        
+        if forecastLbl.text == "" {
+            forecastLbl.text = "Check internet and click refresh"
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +92,7 @@ class ViewController: UIViewController,
         print("date: \(date)")
         print("hour: \(hour)")
         
-        if hour < 20 {
+        if hour > 20 {
             background.image = UIImage(named: "gece")
             weatherLbl.textColor = UIColor.black
             tempLbl.textColor = UIColor.black
@@ -98,11 +128,25 @@ class ViewController: UIViewController,
         
         
         weatherLbl.text = ""
+        forecastLbl.text = ""
+    
         tempLbl.text = ""
         
-        forecast.getForecast(cityTextField.text!.urlEncoded)
+        
         weather.getWeather(cityTextField.text!.urlEncoded)
         
+        
+        
+        
+        
+        forecast.getForecast(cityTextField.text!.urlEncoded)
+        
+        
+        
+        
+        
+        
+       
         
         
         
@@ -139,6 +183,8 @@ class ViewController: UIViewController,
                 self.forecastIcon.image = UIImage(named: "rain")
             } else if forecast.tomorrowWeatherMain == "Snow" {
                 self.forecastIcon.image = UIImage(named: "snow")
+            } else {
+                self.forecastIcon.image = UIImage(named: "cloud")
             }
 
             
@@ -170,6 +216,8 @@ class ViewController: UIViewController,
                 self.weatherIcon.image = UIImage(named: "rain")
             } else if weather.weatherStatus == "Snow" {
                 self.weatherIcon.image = UIImage(named: "snow")
+            } else {
+                self.weatherIcon.image = UIImage(named: "cloud")
             }
             
             
