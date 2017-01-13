@@ -90,20 +90,20 @@
                                         <rect key="frame" x="8" y="8" width="498" height="118.00000000000003"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Scattered Cloudss" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rOF-nU-b09">
-                                                <rect key="frame" x="0.0" y="0.0" width="176" height="46.000000000000028"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="176" height="24.000000000000028"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="C084A3E9-FD08-45D2-A1F5-B46941BB9828" translatesAutoresizingMaskIntoConstraints="NO" id="EKH-Ax-R27" userLabel="sunny">
-                                                <rect key="frame" x="0.0" y="46.000000000000028" width="51" height="42"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="516066FC-D9A7-4D47-9807-20E4F6C591B3" translatesAutoresizingMaskIntoConstraints="NO" id="EKH-Ax-R27" userLabel="sunny">
+                                                <rect key="frame" x="0.0" y="24.000000000000028" width="51" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="HLO-mp-xOX"/>
                                                     <constraint firstAttribute="width" constant="51" id="LOd-cd-hhY"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="2000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JjT-j2-NQg">
-                                                <rect key="frame" x="0.0" y="88.000000000000028" width="55.666666666666671" height="30"/>
+                                                <rect key="frame" x="0.0" y="66.000000000000028" width="55.666666666666671" height="52"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -183,7 +183,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <state key="normal" title="REFRESH">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="refreshAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L31-wr-z4D"/>
@@ -232,8 +232,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Antalya" width="1280" height="853"/>
-        <image name="C084A3E9-FD08-45D2-A1F5-B46941BB9828" width="256" height="256">
+        <image name="516066FC-D9A7-4D47-9807-20E4F6C591B3" width="256" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYsLzU4VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -249,6 +248,7 @@ AZkBoAGoAbUBugG8Ab4BwwHLAc4B0wHbAd4B8AHzAfgAAAAAAAACAQAAAAAAAAA/AAAAAAAAAAAAAAAA
 AAAB+g
 </mutableData>
         </image>
+        <image name="Antalya" width="1280" height="853"/>
         <image name="cloud" width="256" height="256"/>
         <image name="compass" width="35" height="35"/>
     </resources>

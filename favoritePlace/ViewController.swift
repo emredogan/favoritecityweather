@@ -38,18 +38,52 @@ class ViewController: UIViewController,
     @IBAction func refreshAction(_ sender: Any) {
       //  UIApplication.shared.keyWindow?.rootViewController = storyboard!.instantiateViewController(withIdentifier: "Root_View")
         
-        if weatherLbl.text == "" {
+        if weatherLbl.text == "Please click refresh again" {
             
             weather.getWeather(cityTextField.text!.urlEncoded)
             
         }
         
-        if forecastLbl.text == "" {
+        if forecastLbl.text == "Please click refresh again" {
             
             forecast.getForecast(cityTextField.text!.urlEncoded)
 
             
         }
+        
+        let diceRoll = Int(arc4random_uniform(4) + 1)
+        
+        print("diceRoll:\(diceRoll)")
+        
+        let date = NSDate()
+        let calendar = NSCalendar.current
+        let hour = calendar.component(.hour, from: date as Date)
+        
+        print("date: \(date)")
+        print("hour: \(hour)")
+        
+         if diceRoll == 1 {
+            background.image = UIImage(named: "antalyagenel2")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        } else if diceRoll == 2 {
+            background.image = UIImage(named: "antalyagenel")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        } else if diceRoll == 3 {
+            background.image = UIImage(named: "antalyagenel3")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        } else if diceRoll == 4 {
+            background.image = UIImage(named: "Antalya")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        } else {
+            background.image = UIImage(named: "antalyagenel2")
+            weatherLbl.textColor = UIColor.black
+            tempLbl.textColor = UIColor.black
+        }
+
 
         
     }
@@ -186,6 +220,10 @@ class ViewController: UIViewController,
             } else {
                 self.forecastIcon.image = UIImage(named: "cloud")
             }
+            
+            if self.forecastLbl.text == "" {
+                self.forecastLbl.text = "Please click refresh again"
+            }
 
             
         }
@@ -219,6 +257,11 @@ class ViewController: UIViewController,
             } else {
                 self.weatherIcon.image = UIImage(named: "cloud")
             }
+            
+            if self.weatherLbl.text == "" {
+                self.weatherLbl.text = "Please click refresh again"
+            }
+
             
             
             
