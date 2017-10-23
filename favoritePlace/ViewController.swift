@@ -37,7 +37,7 @@ class ViewController: UIViewController,
     @IBOutlet weak var refreshBtn: UIButton!
     
     @IBAction func refreshAction(_ sender: Any) {
-      //  UIApplication.shared.keyWindow?.rootViewController = storyboard!.instantiateViewController(withIdentifier: "Root_View")
+      
         
         if weatherLbl.text == "Please click refresh again" {
             
